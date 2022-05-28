@@ -1,14 +1,14 @@
-<!-- page css -->
-<link href="<?= base_url('') ?>assets/vendors/datatables/dataTables.bootstrap.min.css" rel="stylesheet">
-
-<!-- Content Wrapper START -->
-<div class="main-content">
+<div class="container-fluid mt-xl-50 mt-sm-30 mt-15">
     <div class="card">
         <div class="card-body">
-            <h4>Data Kriteria</h4>
-            <a href="<?= url('kriteria/tambah_kriteria') ?>" class="btn btn-primary">Tambah Data</a>
+            <div class="row mb-20">
+                <div class="col-md-12 d-flex justify-content-between">
+                    <h4>Data Kriteria</h4>
+                    <a href="<?= url('kriteria/tambah_kriteria') ?>" class="btn btn-primary">Tambah Data</a>
+                </div>
+            </div>
             <div class="m-t-25">
-                <table id="data-table" class="table">
+                <table id="datatable" class="table">
                     <thead>
                         <tr>
                             <th>Kode</th>

@@ -1,4 +1,4 @@
-<div class="main-content">
+<div class="container-fluid mt-xl-50 mt-sm-30 mt-15">
     <!-- Start content -->
     <div class="content">
         <div class="container-fluid">

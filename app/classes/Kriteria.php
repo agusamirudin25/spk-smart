@@ -19,7 +19,7 @@ class Kriteria
 
     public function index()
     {
-        $data['kriteria'] = $this->_db->other_query("SELECT * FROM t_kriteria", 2);
+        $data['kriteria'] = $this->_db->other_query("SELECT * FROM kriteria", 2);
         view('layouts/_head');
         view('kriteria/index', $data);
         view('layouts/_foot');
@@ -31,7 +31,7 @@ class Kriteria
             'benefit',
             'cost',
         ];
-        $kode_terakhir = $this->_db->get_last_param('t_kriteria', 'kode_kriteria');
+        $kode_terakhir = $this->_db->get_last_param('kriteria', 'kode_kriteria');
         if ($kode_terakhir) {
             $nilai_kode = substr($kode_terakhir['kode_kriteria'], 1);
             $kode = (int) $nilai_kode;
@@ -55,7 +55,7 @@ class Kriteria
 
         // insert t_kriteria
         $insert = $this->_db->insert("
-            INSERT INTO t_kriteria (kode_kriteria, nama_kriteria, tipe, bobot)
+            INSERT INTO kriteria (kode_kriteria, nama_kriteria, tipe, bobot)
             VALUES ('$kode_kriteria', '$nama_kriteria', '$tipe', '$bobot')");
 
         if ($insert) {
@@ -75,7 +75,7 @@ class Kriteria
             'benefit',
             'cost',
         ];
-        $data['kriteria'] = $this->_db->other_query("SELECT * FROM t_kriteria WHERE kode_kriteria = '$kode'");
+        $data['kriteria'] = $this->_db->other_query("SELECT * FROM kriteria WHERE kode_kriteria = '$kode'");
         view('layouts/_head');
         view('kriteria/ubah_data', $data);
         view('layouts/_foot');
@@ -90,7 +90,7 @@ class Kriteria
 
         // update t_kriteria
         $update = $this->_db->edit("
-            UPDATE t_kriteria SET nama_kriteria = '$nama_kriteria', tipe = '$tipe', bobot = '$bobot'
+            UPDATE kriteria SET nama_kriteria = '$nama_kriteria', tipe = '$tipe', bobot = '$bobot'
             WHERE kode_kriteria = '$kode_kriteria'");
 
 
@@ -109,7 +109,7 @@ class Kriteria
     {
         $input = post();
         $id = $input['id'];
-        $delete = $this->_db->delete('t_kriteria', 'kode_kriteria', "'" . $id . "'");
+        $delete = $this->_db->delete('kriteria', 'kode_kriteria', "'" . $id . "'");
         if ($delete) {
             $res['status'] = 1;
             $res['msg'] = "Data berhasil dihapus";

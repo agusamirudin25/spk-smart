@@ -5,74 +5,83 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <title><?= $title ?? 'Sistem Pendukung Keputusan' ?></title>
-    <!-- Favicon -->
-    <link rel="shortcut icon" href="<?= base_url('assets/images/logo/favicon.png') ?>">
+    <link rel="shortcut icon" href="<?= base_url('favicon.ico') ?>">
+    <link rel="icon" href="<?= base_url('assets/favicon.ico') ?>" type="image/x-icon">
 
-    <!-- Core css -->
-    <link href="<?= base_url('assets/css/app.min.css') ?>" rel="stylesheet">
+    <!-- Toggles CSS -->
+    <link href="<?= base_url('assets/vendors/jquery-toggles/css/toggles.css') ?>" rel="stylesheet" type="text/css">
+    <link href="<?= base_url('assets/vendors/jquery-toggles/css/themes/toggles-light.css') ?>" rel="stylesheet" type="text/css">
+
+    <!-- Custom CSS -->
+    <link href="<?= base_url('assets/dist/css/style.css') ?>" rel="stylesheet" type="text/css">
 </head>
 
 <body>
-    <div class="app">
-    <div class="container-fluid">
-            <div class="d-flex full-height p-v-15 flex-column justify-content-between">
-                <div class="d-none d-md-flex p-h-40">
-                    <img src="assets/images/logo/logo.png" alt="">
-                </div>
-                <div class="container">
-                    <div class="row align-items-center">
-                        <div class="col-md-5">
-                            <div class="card">
-                                <div class="card-body">
-                                    <h2 class="m-t-20">Login</h2>
-                                    <p class="m-b-30">Masukan NIP dan password untuk masuk ke dalam sistem</p>
-                                    <form method="post" autocomplete="off" id="formLogin">
-                                        <div class="form-group">
-                                            <label class="font-weight-semibold" for="nip">NIP:</label>
-                                            <div class="input-affix">
-                                                <i class="prefix-icon anticon anticon-user"></i>
-                                                <input type="text" class="form-control" id="nip" placeholder="NIP" name="nip">
-                                            </div>
+    <!-- Preloader -->
+    <div class="preloader-it">
+        <div class="loader-pendulums"></div>
+    </div>
+    <!-- /Preloader -->
+
+    <!-- HK Wrapper -->
+    <div class="hk-wrapper">
+
+        <!-- Main Content -->
+        <div class="hk-pg-wrapper hk-auth-wrapper">
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="col-xl-12">
+                        <div class="auth-form-wrap pt-xl-0 pt-70">
+                            <div class="auth-form w-xl-25 w-lg-55 w-sm-75 w-100">
+                                <form autocomplete="off" id="formLogin" method="post">
+                                    <h1 class="display-4 text-center mb-10">Selamat Datang</h1>
+                                    <p class="text-center mb-30">Silakan login untuk mengakses sistem.</p>
+                                    <div class="form-group">
+                                        <input class="form-control" placeholder="NIS/NIP" type="text" id="kode_pengguna" name="kode_pengguna" required>
+                                    </div>
+                                    <div class="form-group">
+                                        <div class="input-group">
+                                            <input class="form-control" placeholder="Password" type="password" id="password" name="password" required>
                                         </div>
-                                        <div class="form-group">
-                                            <label class="font-weight-semibold" for="password">Password:</label>
-                                            <div class="input-affix m-b-10">
-                                                <i class="prefix-icon anticon anticon-lock"></i>
-                                                <input type="password" class="form-control" id="password" name="password" placeholder="Password">
-                                            </div>
-                                        </div>
-                                        <div class="form-group">
-                                            <div class="d-flex align-items-center justify-content-end">
-                                                <button class="btn btn-primary">Login</button>
-                                            </div>
-                                        </div>
-                                    </form>
-                                </div>
+                                    </div>
+                                    <button class="btn btn-primary btn-block" type="submit">Login</button>
+                                </form>
                             </div>
-                        </div>
-                        <div class="offset-md-1 col-md-6 d-none d-md-block">
-                            <img class="img-fluid" src="assets/images/others/login-2.png" alt="">
                         </div>
                     </div>
                 </div>
-                <div class="d-none d-md-flex  p-h-40 justify-content-between">
-                    <span class="">© <?= date('Y') ?> <?= $title ?? 'Sistem Pendukung Keputusan' ?></span>
-                </div>
             </div>
         </div>
-    </div>
+        <!-- /Main Content -->
 
-    <!-- Core Vendors JS -->
-    <script src="<?= base_url('assets/js/vendors.min.js') ?>"></script>
+    </div>
+    <!-- /HK Wrapper -->
+    <!-- jQuery -->
+    <script src="<?= base_url('assets/vendors/jquery/dist/jquery.min.js') ?>"></script>
+
+    <!-- Bootstrap Core JavaScript -->
+    <script src="<?= base_url('assets/vendors/popper.js/dist/umd/popper.min.js') ?>"></script>
+    <script src="<?= base_url('assets/vendors/bootstrap/dist/js/bootstrap.min.js') ?>"></script>
+
+    <!-- Slimscroll JavaScript -->
+    <script src="<?= base_url('assets/dist/js/jquery.slimscroll.js') ?>"></script>
+
+    <!-- Fancy Dropdown JS -->
+    <script src="<?= base_url('assets/dist/js/dropdown-bootstrap-extended.js') ?>"></script>
+
+    <!-- FeatherIcons JavaScript -->
+    <script src="<?= base_url('assets/dist/js/feather.min.js') ?>"></script>
+
+    <!-- Init JavaScript -->
+    <script src="<?= base_url('assets/dist/js/init.js') ?>"></script>
 
     <!-- Core JS -->
-    <script src="<?= base_url('assets/js/app.min.js') ?>"></script>
     <script src="<?= base_url('assets/js/sweetalert2.all.min.js') ?>"></script>
     <script src="<?= base_url('assets/js/helpers.js') ?>"></script>
     <script>
         $(document).ready(function() {
-            $('#nip').number();
-            $('#nip').maxLength(18);
+            $('#kode_pengguna').number();
+            $('#kode_pengguna').maxLength(20);
 
             const BASE_URL = "<?= base_url() ?>";
             $('#formLogin').submit(function(e) {

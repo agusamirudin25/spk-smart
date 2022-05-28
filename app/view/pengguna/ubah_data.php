@@ -1,4 +1,4 @@
-<div class="main-content">
+<div class="container-fluid mt-xl-50 mt-sm-30 mt-15">
     <!-- Start content -->
     <div class="content">
         <div class="container-fluid">
@@ -19,19 +19,13 @@
                                 <div class="form-group row">
                                     <label for="nip" class="col-sm-2 col-form-label">NIP</label>
                                     <div class="col-sm-10">
-                                        <input class="form-control" type="text" placeholder="Masukan NIP" value="<?= $pengguna->nip ?>" readonly name="nip" id="nip" required>
+                                        <input class="form-control" type="text" placeholder="Masukan NIP" value="<?= $pengguna->kode_pengguna ?>" readonly name="kode_pengguna" id="kode_pengguna" required>
                                     </div>
                                 </div>
                                 <div class="form-group row">
                                     <label for="nama_lengkap" class="col-sm-2 col-form-label">Nama Lengkap</label>
                                     <div class="col-sm-10">
                                         <input class="form-control" type="text" placeholder="Masukan nama lengkap" value="<?= $pengguna->nama_lengkap ?>" name="nama_lengkap" id="nama_lengkap" required>
-                                    </div>
-                                </div>
-                                <div class="form-group row">
-                                    <label for="jabatan" class="col-sm-2 col-form-label">Jabatan</label>
-                                    <div class="col-sm-10">
-                                        <input class="form-control" type="text" placeholder="Masukan Jabatan" name="jabatan" id="jabatan" required value="<?= $pengguna->jabatan ?>">
                                     </div>
                                 </div>
                                 <div class="form-group row">
@@ -49,7 +43,7 @@
                                     <label for="password" class="col-sm-2 col-form-label">Password</label>
                                     <div class="col-sm-10">
                                         <input class="form-control" type="password" placeholder="*************" name="password" id="password">
-                                        <small class="text-warning">Kosongkan password apabila tidak akan mengubahnya</small>
+                                        <small class="text-info">Kosongkan password apabila tidak akan mengubahnya</small>
                                     </div>
                                 </div>
                                 <button type="submit" class="btn btn-success" name="submit">Ubah</button>

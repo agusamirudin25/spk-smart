@@ -2,167 +2,106 @@
 <html lang="en">
 
 <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <title>Sistem Pendukung Keputusan Penilaian Kinerja Guru</title>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+    <title>Sistem Pendukung Keputusan Menentukan Ekstrakurikuler Siswa</title>
+    <meta name="description" content="Sistem Pendukung Keputusan Menentukan Ekstrakurikuler Siswa" />
 
     <!-- Favicon -->
-    <link rel="shortcut icon" href="<?= base_url('') ?>assets/images/logo/favicon.png">
+    <link rel="shortcut icon" href="<?= base_url('assets/favicon.ico') ?>">
+    <link rel="icon" href="<?= base_url('assets/favicon.ico') ?>" type="image/x-icon">
 
-    <!-- Core css -->
-    <link href="<?= base_url('') ?>assets/css/app.min.css" rel="stylesheet" />
-     <!-- Core Vendors JS -->
-    <script src="<?= base_url('') ?>assets/js/vendors.min.js"></script>
+    <!-- Toggles CSS -->
+    <link href="<?= base_url('assets/vendors/jquery-toggles/css/toggles.css') ?>" rel="stylesheet" type="text/css">
+    <link href="<?= base_url('assets/vendors/jquery-toggles/css/themes/toggles-light.css') ?>" rel="stylesheet" type="text/css">
 
-    <!-- Core JS -->
-    <script src="<?= base_url('') ?>assets/js/app.min.js"></script>
+    <!-- Toastr CSS -->
+    <link href="<?= base_url('assets/vendors/jquery-toast-plugin/dist/jquery.toast.min.css') ?>" rel="stylesheet" type="text/css">
 
+    <link href="<?= base_url('assets') ?>/vendors/datatables.net-dt/css/jquery.dataTables.min.css" rel="stylesheet" type="text/css" />
+    <link href="<?= base_url('assets') ?>/vendors/datatables.net-responsive-dt/css/responsive.dataTables.min.css" rel="stylesheet" type="text/css" />
+
+    <!-- Custom CSS -->
+    <link href="<?= base_url('assets/dist/css/style.css') ?>" rel="stylesheet" type="text/css">
+
+    <!-- jQuery -->
+    <script src="<?= base_url('assets/vendors/jquery/dist/jquery.min.js') ?>"></script>
 </head>
 
 <body>
-    <div class="app">
-        <div class="layout">
-            <!-- Header START -->
-            <div class="header">
-                <div class="logo logo-dark">
-                    <a href="<?= base_url('') ?>">
-                        <img src="<?= base_url('') ?>assets/images/logo/logo.png" alt="Logo">
-                        <img class="logo-fold" src="<?= base_url('') ?>assets/images/logo/logo-fold.png" alt="Logo">
-                    </a>
-                </div>
-                <div class="logo logo-white">
-                    <a href="<?= base_url('') ?>">
-                        <img src="<?= base_url('') ?>assets/images/logo/logo-white.png" alt="Logo">
-                        <img class="logo-fold" src="<?= base_url('') ?>assets/images/logo/logo-fold-white.png" alt="Logo">
-                    </a>
-                </div>
-                <div class="nav-wrap">
-                    <ul class="nav-left">
-                        <li class="desktop-toggle">
-                            <a href="javascript:void(0);">
-                                <i class="anticon"></i>
-                            </a>
-                        </li>
-                        <li class="mobile-toggle">
-                            <a href="javascript:void(0);">
-                                <i class="anticon"></i>
-                            </a>
-                        </li>
-                    </ul>
-                    <ul class="nav-right">
+    <!-- Preloader -->
+    <div class="preloader-it">
+        <div class="loader-pendulums"></div>
+    </div>
+    <!-- /Preloader -->
 
-                        <li class="dropdown dropdown-animated scale-left">
-                            <div class="pointer" data-toggle="dropdown">
-                                <div class="avatar avatar-image  m-h-10 m-r-15">
-                                    <img src="<?= base_url() ?>assets/images/avatars/thumb-1.jpg" alt="">
-                                </div>
+    <!-- HK Wrapper -->
+    <div class="hk-wrapper hk-vertical-nav">
+        <!-- Top Navbar -->
+        <nav class="navbar navbar-expand-xl navbar-light fixed-top hk-navbar">
+            <a id="navbar_toggle_btn" class="navbar-toggle-btn nav-link-hover" href="javascript:void(0);"><span class="feather-icon"><i data-feather="menu"></i></span></a>
+            <a class="navbar-brand" href="<?= base_url() ?>">
+                <h3>SPK</h3>
+            </a>
+            <ul class="navbar-nav hk-navbar-content">
+                <li class="nav-item dropdown dropdown-authentication">
+                    <a class="nav-link dropdown-toggle no-caret" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        <div class="media">
+                            <div class="media-body">
+                                <span><?= session_get('nama') ?><i class="zmdi zmdi-chevron-down"></i></span>
                             </div>
-                            <div class="p-b-15 p-t-20 dropdown-menu pop-profile">
-                                <div class="p-h-20 p-b-15 m-b-10 border-bottom">
-                                    <div class="d-flex m-r-50">
-                                        <div class="m-l-10">
-                                            <p class="m-b-0 text-dark font-weight-semibold"><?= session_get('nama') ?></p>
-                                        </div>
-                                    </div>
-                                </div>
-                                <a href="<?= base_url('Auth/logout') ?>" class="dropdown-item d-block p-h-15 p-v-10">
-                                    <div class="d-flex align-items-center justify-content-between">
-                                        <div>
-                                            <i class="anticon opacity-04 font-size-16 anticon-logout"></i>
-                                            <span class="m-l-10">Logout</span>
-                                        </div>
-                                    </div>
-                                </a>
-                            </div>
-                        </li>
-                    </ul>
-                </div>
-            </div>
-            <!-- Header END -->
+                        </div>
+                    </a>
+                    <div class="dropdown-menu dropdown-menu-right" data-dropdown-in="flipInX" data-dropdown-out="flipOutX">
+                        <a class="dropdown-item" href="<?= base_url('Auth/logout') ?>"><i class="dropdown-icon zmdi zmdi-power"></i><span>Log out</span></a>
+                    </div>
+                </li>
+            </ul>
+        </nav>
+        <!-- /Top Navbar -->
 
-            <!-- Side Nav START -->
-            <div class="side-nav">
-                <div class="side-nav-inner">
-                    <ul class="side-nav-menu scrollable">
-                        <li class="nav-item dropdown">
-                            <a href="<?= base_url('Dashboard') ?>">
-                                <span class="icon-holder">
-                                    <i class="anticon anticon-dashboard"></i>
-                                </span>
-                                <span class="title">Dashboard</span>
+        <!-- Vertical Nav -->
+        <nav class="hk-nav hk-nav-light">
+            <a href="javascript:void(0);" id="hk_nav_close" class="hk-nav-close"><span class="feather-icon"><i data-feather="x"></i></span></a>
+            <div class="nicescroll-bar">
+                <div class="navbar-nav-wrap">
+                    <ul class="navbar-nav flex-column">
+                        <li class="nav-item">
+                            <a class="nav-link" href="<?= base_url('Dashboard') ?>">
+                                <span class="feather-icon"><i data-feather="chrome"></i></span>
+                                <span class="nav-link-text">Dashboard</span>
                             </a>
                         </li>
-                        <?php if(session_get('type') == 1) : ?>
-                        <li class="nav-item dropdown">
-                            <a href="<?= base_url('Pengguna') ?>">
-                                <span class="icon-holder">
-                                    <i class="anticon anticon-user"></i>
-                                </span>
-                                <span class="title">Kelola Pengguna</span>
+                        <li class="nav-item">
+                            <a class="nav-link" href="<?= base_url('Pengguna') ?>">
+                                <span class="feather-icon"><i data-feather="users"></i></span>
+                                <span class="nav-link-text">Pengguna</span>
                             </a>
                         </li>
-                        <li class="nav-item dropdown">
-                            <a href="<?= base_url('Guru') ?>">
-                                <span class="icon-holder">
-                                    <i class="anticon anticon-team"></i>
-                                </span>
-                                <span class="title">Kelola Guru</span>
+                        <li class="nav-item">
+                            <a class="nav-link" href="<?= base_url('Kriteria') ?>">
+                                <span class="feather-icon"><i data-feather="cpu"></i></span>
+                                <span class="nav-link-text">Kriteria</span>
                             </a>
                         </li>
-                        <li class="nav-item dropdown">
-                            <a href="<?= base_url('Kriteria') ?>">
-                                <span class="icon-holder">
-                                    <i class="anticon anticon-hdd"></i>
-                                </span>
-                                <span class="title">Kelola Kriteria</span>
+                        <li class="nav-item">
+                            <a class="nav-link" href="<?= base_url('Alternatif') ?>">
+                                <span class="feather-icon"><i data-feather="command"></i></span>
+                                <span class="nav-link-text">Alternatif</span>
                             </a>
                         </li>
-                        <li class="nav-item dropdown">
-                            <a href="<?= base_url('Kompetensi') ?>">
-                                <span class="icon-holder">
-                                    <i class="anticon anticon-bars"></i>
-                                </span>
-                                <span class="title">Kelola Kompetensi</span>
-                            </a>
-                        </li>
-                        <?php else : ?>
-                            <li class="nav-item dropdown">
-                                <a href="<?= base_url('Kuesioner') ?>">
-                                    <span class="icon-holder">
-                                        <i class="anticon anticon-read"></i>
-                                    </span>
-                                    <span class="title">Kuesioner</span>
-                                </a>
-                            </li>
-                        <?php endif; ?>
-                        <li class="nav-item dropdown">
-                            <a href="<?= base_url('Keputusan') ?>">
-                                <span class="icon-holder">
-                                    <i class="anticon anticon-switcher"></i>
-                                </span>
-                                <span class="title">Keputusan</span>
-                            </a>
-                        </li>
-                        <li class="nav-item dropdown">
-                            <a href="<?= base_url('Laporan') ?>">
-                                <span class="icon-holder">
-                                    <i class="anticon anticon-file-pdf"></i>
-                                </span>
-                                <span class="title">Laporan</span>
-                            </a>
-                        </li>
-                        <li class="nav-item dropdown">
-                            <a href="<?= base_url('Auth/logout') ?>">
-                                <span class="icon-holder">
-                                    <i class="anticon anticon-logout"></i>
-                                </span>
-                                <span class="title">Logout</span>
+                        <li class="nav-item">
+                            <a class="nav-link" href="<?= base_url('Auth/logout') ?>">
+                                <span class="feather-icon"><i data-feather="log-out"></i></span>
+                                <span class="nav-link-text">Logout</span>
                             </a>
                         </li>
                     </ul>
                 </div>
             </div>
-            <!-- Side Nav END -->
+        </nav>
+        <div id="hk_nav_backdrop" class="hk-nav-backdrop"></div>
+        <!-- /Vertical Nav -->
 
-            <!-- Page Container START -->
-            <div class="page-container">
+        <!-- Main Content -->
+        <div class="hk-pg-wrapper">

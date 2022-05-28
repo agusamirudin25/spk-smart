@@ -18,24 +18,24 @@ class Auth
         if (isset($_SESSION['nip'])) {
             redirect('Dashboard');
         }
-        $title = 'Sistem Pendukung Keputusan Penilaian Kinerja Guru';
+        $title = 'Sistem Pendukung Keputusan Menentukan Ekstrakurikuler Siswa';
         return view('login', compact('title'));
     }
 
     public function cek_login()
     {
         $input = post($_POST);
-        $nip = $input['nip'];
+        $kode_pengguna = $input['kode_pengguna'];
         $password = $input['password'];
-        $user = $this->auth->get("SELECT * from t_pengguna WHERE nip = '$nip'");
+        $user = $this->auth->get("SELECT * from pengguna WHERE kode_pengguna = '$kode_pengguna'");
         if ($user) {
             if ($user->status != '1') {
-                $data['msg'] = 'NIP atau password tidak ditemukan !';
+                $data['msg'] = 'NIS/NIP atau password tidak ditemukan !';
                 $data['title'] = 'Login Failed ';
                 $data['status'] = 0;
             } else {
                 if (password_verify($password, $user->password)) :
-                    $nipPengguna = $user->nip;
+                    $nipPengguna = $user->kode_pengguna;
                     $nama = $user->nama_lengkap;
                     $type = $user->role;
                     
@@ -47,13 +47,13 @@ class Auth
                     session_set('nama', $nama);
                     session_set('type', $type);
                 else :
-                    $data['msg'] = 'NIP atau password tidak ditemukan !';
+                    $data['msg'] = 'NIS/NIP atau password tidak ditemukan !';
                     $data['title'] = 'Login Failed ';
                     $data['status'] = 0;
                 endif;
             }
         } else {
-            $data['msg'] = 'NIP atau password tidak ditemukan !';
+            $data['msg'] = 'NIS/NIP atau password tidak ditemukan !';
             $data['title'] = 'Login Failed ';
             $data['status'] = 0;
         }

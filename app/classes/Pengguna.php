@@ -19,7 +19,7 @@ class Pengguna
 
     public function index()
     {
-        $data['pengguna'] = $this->_db->other_query("SELECT t_pengguna.nip, t_pengguna.nama_lengkap, t_pengguna.jabatan, t_role.role FROM t_pengguna JOIN t_role ON t_pengguna.role = t_role.id", 2);
+        $data['pengguna'] = $this->_db->other_query("SELECT pengguna.kode_pengguna, pengguna.nama_lengkap, `role`.`role` FROM pengguna JOIN `role` ON pengguna.role = `role`.id", 2);
         view('layouts/_head');
         view('pengguna/index', $data);
         view('layouts/_foot');
@@ -27,23 +27,22 @@ class Pengguna
 
     public function tambah_pengguna()
     {
-        $data['role'] = $this->_db->other_query('SELECT id, `role` FROM t_role', 2);
+        $data['role'] = $this->_db->other_query('SELECT id, `role` FROM role', 2);
         view('layouts/_head');
         view('pengguna/tambah_data', $data);
         view('layouts/_foot');
     }
     public function proses_tambah_pengguna()
     {
-        $input = post();
-        $nip            = $input['nip'];
-        $nama_lengkap   = $input['nama_lengkap'];
-        $jabatan        = $input['jabatan'];
-        $role           = $input['role'];
-        $password       = password_hash($input['password'], PASSWORD_DEFAULT);
-        $validasi_nip = $this->_db->get("SELECT nip FROM t_pengguna WHERE nip = '$nip'");
+        $input         = post();
+        $kode_pengguna = $input['kode_pengguna'];
+        $nama_lengkap  = $input['nama_lengkap'];
+        $role          = $input['role'];
+        $password      = password_hash($input['password'], PASSWORD_DEFAULT);
+        $validasi_nip  = $this->_db->get("SELECT kode_pengguna FROM pengguna WHERE kode_pengguna = '$kode_pengguna'");
 
         if ($validasi_nip == NULL) {
-            $insert = $this->_db->insert("INSERT INTO t_pengguna(nip, nama_lengkap, `password`, `role`, jabatan) values ('$nip', '$nama_lengkap', '$password', '$role', '$jabatan')");
+            $insert = $this->_db->insert("INSERT INTO pengguna(kode_pengguna, nama_lengkap, `password`, `role`) values ('$kode_pengguna', '$nama_lengkap', '$password', '$role')");
             if ($insert) {
                 $res['status'] = 1;
                 $res['msg'] = "Data Pengguna berhasil ditambahkan";
@@ -59,29 +58,28 @@ class Pengguna
 
         echo json_encode($res);
     }
-    public function ubah_pengguna($nip)
+    public function ubah_pengguna($kode_pengguna)
     {
-        $data['role'] = $this->_db->other_query('SELECT id, `role` FROM t_role', 2);
-        $data['pengguna'] = $this->_db->other_query("SELECT * FROM t_pengguna WHERE nip = '$nip'");
+        $data['role'] = $this->_db->other_query('SELECT id, `role` FROM role', 2);
+        $data['pengguna'] = $this->_db->other_query("SELECT * FROM pengguna WHERE kode_pengguna = '$kode_pengguna'");
         view('layouts/_head');
         view('pengguna/ubah_data', $data);
         view('layouts/_foot');
     }
     public function proses_ubah_pengguna()
     {
-        $input          = post();
-        $nip            = $input['nip'];
-        $nama_lengkap   = $input['nama_lengkap'];
-        $jabatan        = $input['jabatan'];
-        $role           = $input['role'];
-        $password       = $input['password'];
-        $password_hash  = password_hash($input['password'], PASSWORD_DEFAULT);
-        $validasi_nip = $this->_db->get("SELECT nip FROM t_pengguna WHERE nip = '$nip' AND nip != '$nip'");
+        $input         = post();
+        $kode_pengguna = $input['kode_pengguna'];
+        $nama_lengkap  = $input['nama_lengkap'];
+        $role          = $input['role'];
+        $password      = $input['password'];
+        $password_hash = password_hash($input['password'], PASSWORD_DEFAULT);
+        $validasi_nip  = $this->_db->get("SELECT kode_pengguna FROM pengguna WHERE kode_pengguna = '$kode_pengguna' AND kode_pengguna != '$kode_pengguna'");
         if($validasi_nip == NULL){
             if ($password == NULL || $password == '') {
-                $update = $this->_db->edit("UPDATE t_pengguna SET nama_lengkap = '$nama_lengkap', `role` = '$role', jabatan = '$jabatan' WHERE nip = '$nip'");
+                $update = $this->_db->edit("UPDATE pengguna SET nama_lengkap = '$nama_lengkap', `role` = '$role' WHERE kode_pengguna = '$kode_pengguna'");
             } else {
-                $update = $this->_db->edit("UPDATE t_pengguna SET nama_lengkap = '$nama_lengkap', `role` = '$role', jabatan = '$jabatan', `password` = '$password_hash' WHERE nip = '$nip'");
+                $update = $this->_db->edit("UPDATE pengguna SET nama_lengkap = '$nama_lengkap', `role` = '$role', `password` = '$password_hash' WHERE kode_pengguna = '$kode_pengguna'");
             }
             if ($update) {
                 $res['status'] = 1;
@@ -101,7 +99,7 @@ class Pengguna
     {
         $input = post();
         $id = $input['id'];
-        $delete = $this->_db->delete('t_pengguna', 'nip', "'" . $id . "'");
+        $delete = $this->_db->delete('pengguna', 'kode_pengguna', "'" . $id . "'");
         if ($delete) {
             $res['status'] = 1;
             $res['msg'] = "Data berhasil dihapus";
