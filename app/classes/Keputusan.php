@@ -19,14 +19,28 @@ class Keputusan
 
     public function index()
     {
-        $data['guru'] = $this->_db->getAll('t_guru');
-        $penilaian = $this->_db->getAll('v_penilaian');
+        $kode_pengguna = $_SESSION['nip'];
+        $query = "SELECT
+            alternatif.kode_alternatif as kd_alternatif,
+            alternatif.nama_alternatif,
+            ( SELECT p.nilai FROM penilaian p WHERE p.kode_pengguna = '$kode_pengguna' AND p.kode_alternatif = kd_alternatif AND p.kode_kriteria = 'K1' ) AS K1,
+            ( SELECT p.nilai FROM penilaian p WHERE p.kode_pengguna = '$kode_pengguna' AND p.kode_alternatif = kd_alternatif AND p.kode_kriteria = 'K2' ) AS K2,
+            ( SELECT p.nilai FROM penilaian p WHERE p.kode_pengguna = '$kode_pengguna' AND p.kode_alternatif = kd_alternatif AND p.kode_kriteria = 'K3' ) AS K3,
+            ( SELECT p.nilai FROM penilaian p WHERE p.kode_pengguna = '$kode_pengguna' AND p.kode_alternatif = kd_alternatif AND p.kode_kriteria = 'K4' ) AS K4,
+            ( SELECT p.nilai FROM penilaian p WHERE p.kode_pengguna = '$kode_pengguna' AND p.kode_alternatif = kd_alternatif AND p.kode_kriteria = 'K5' ) AS K5 
+        FROM
+            alternatif
+            LEFT JOIN penilaian ON penilaian.kode_alternatif = alternatif.kode_alternatif
+            LEFT JOIN kriteria ON penilaian.kode_kriteria = kriteria.kode_kriteria
+            GROUP BY kd_alternatif";
+        $penilaian = $this->_db->other_query($query, 2);
         $tempData = [];
+        $status_tombol = true;
         foreach ($penilaian as $key => $value) {
             if ($value['K1'] == NULL || $value['K2'] == NULL || $value['K3'] == NULL || $value['K4'] == NULL || $value['K5'] == NULL) {
                 $tempData[] = [
                     'kode'   => $value['kd_alternatif'],
-                    'nama'   => $value['nama_lengkap'],
+                    'nama'   => $value['nama_alternatif'],
                     'K1'     => (int)$value['K1'],
                     'K2'     => (float)$value['K2'],
                     'K3'     => (int)$value['K3'],
@@ -34,10 +48,11 @@ class Keputusan
                     'K5'     => (int)$value['K5'],
                     'status' => 0
                 ];
+                $status_tombol = false;
             } else {
                 $tempData[] = [
                     'kode' => $value['kd_alternatif'],
-                    'nama' => $value['nama_lengkap'],
+                    'nama' => $value['nama_alternatif'],
                     'K1' => (int)$value['K1'],
                     'K2' => (float)$value['K2'],
                     'K3' => (int)$value['K3'],
@@ -45,147 +60,88 @@ class Keputusan
                     'K5' => (int)$value['K5'],
                     'status' => 1
                 ];
+                $status_tombol = true;
             }
         }
         $data['penilaian'] = $tempData;
+        $data['status_tombol'] = $status_tombol;
         view('layouts/_head');
         view('keputusan/index', $data);
         view('layouts/_foot');
     }
 
-    public function tambah_penilaian($kode_alternatif)
-    {
-        $data['guru'] = $this->_db->other_query("SELECT * FROM t_guru WHERE kode_alternatif = '$kode_alternatif'");
-        $data['kriteria'] = $this->_db->getAll('t_kriteria');
-        $nilai = $this->_db->other_query("SELECT * FROM t_penilaian WHERE kode_alternatif = '$kode_alternatif'", 2);
-        $tempNilai = [];
-        foreach ($nilai as $key => $value) {
-            $tempNilai[$value['kode_kriteria']] = (float) $value['nilai'];
-        }
-        $data['nilai'] = $tempNilai;
-        $data['arrKriteria'] = [
-            'K2', 'K3', 'K4'
-        ];
-        view('layouts/_head');
-        view('keputusan/tambah_data', $data);
-        view('layouts/_foot');
-    }
-    public function proses_tambah_penilaian()
-    {
-        $nilai = $_POST['nilai'];
-        $kd_kriteria = $_POST['kd_kriteria'];
-        $kode_alternatif = $_POST['kode_alternatif'];
-        $i = 0;
-        foreach ($nilai as $row) :
-            // insert t_penilaian
-            $kode_kriteria = $kd_kriteria[$i++];
-            $this->_db->insert("INSERT INTO t_penilaian (kode_alternatif, kode_kriteria, nilai, `status`) VALUES ('$kode_alternatif', '$kode_kriteria', '$row', 1)");
-        endforeach;
-
-        $res['status'] = 1;
-        $res['msg'] = "Data Penilaian berhasil ditambahkan";
-        $res['page'] = "keputusan";
-
-        echo json_encode($res);
-    }
-    public function ubah_penilaian($kode)
-    {
-        $data['keputusan'] = $this->_db->other_query("SELECT * FROM v_penilaian WHERE kd_alternatif = '$kode'");
-        $data['kriteria'] = $this->_db->other_query("SELECT * FROM t_kriteria", 2);
-        $data['arrKriteria'] = [
-            'K2', 'K3', 'K4'
-        ];
-        view('layouts/_head');
-        view('keputusan/ubah_data', $data);
-        view('layouts/_foot');
-    }
-    public function proses_ubah_penilaian()
-    {
-        $nilai = $_POST['nilai'];
-        $kd_kriteria = $_POST['kd_kriteria'];
-        $kode_alternatif = $_POST['kode_alternatif'];
-        $i = 0;
-        foreach ($nilai as $row) :
-            // insert t_penilaian
-            $kode_kriteria = $kd_kriteria[$i++];
-            $this->_db->edit("UPDATE t_penilaian SET nilai = '$row' WHERE kode_alternatif = '$kode_alternatif' AND kode_kriteria = '$kode_kriteria'");
-        endforeach;
-
-        $res['status'] = 1;
-        $res['msg'] = "Data Penilaian berhasil diubah";
-        $res['page'] = "keputusan";
-
-        echo json_encode($res);
-    }
-    public function hapus_penilaian()
-    {
-        $input = post();
-        $id = $input['id'];
-        $this->_db->insert("DELETE FROM t_penilaian WHERE kode_alternatif = '$id' AND kode_kriteria != 'K2'");
-        $res['status'] = 1;
-        $res['msg'] = "Data berhasil dihapus";
-        $res['page'] = "Keputusan";
-        echo json_encode($res);
-    }
-
     public function buat_keputusan()
     {
         $waktuAwal = microtime(true);
-        $penilaian = $this->_db->getAll('v_penilaian');
-        $kriteria = $this->_db->getAll('t_kriteria');
+        $kode_pengguna = $_SESSION['nip'];
+        $kriteria = $this->_db->getAll('kriteria');
+        $alternatif = $this->_db->getAll('alternatif');
 
-        $nilai_max = [];
-        $nilai_min = [];
-        // PROSES NORMALISASI
-        foreach ($penilaian as $key_penilaian => $value_penilaian) {
-            foreach ($kriteria as $key => $row) {
-                $nilai_max = $this->_db->other_query("SELECT MAX({$row['kode_kriteria']}) AS max FROM v_penilaian")->max;
-                $nilai_min = $this->_db->other_query("SELECT MIN({$row['kode_kriteria']}) AS min FROM v_penilaian")->min;
-                // pretty($row['tipe'] == 'benefit' ? ($value_penilaian[$row['kode_kriteria']] . '/' . $nilai_max) : ($nilai_min . '/' . $value_penilaian[$row['kode_kriteria']]), 0);
-                $normalisasi[$value_penilaian['kd_alternatif']][$row['kode_kriteria']] = $row['tipe'] == 'benefit' ? ($value_penilaian[$row['kode_kriteria']] / $nilai_max) : ($nilai_min / $value_penilaian[$row['kode_kriteria']]);
-            }
-        }
-
-        // menentukan bobot kriteria
-        $totalBobot = $this->_db->other_query("SELECT SUM(bobot) AS total FROM t_kriteria")->total;
+        //ambil total bobot kriteria
+        $totalBobot = $this->_db->other_query("SELECT sum(bobot) as total FROM kriteria")->total;
         foreach ($kriteria as $key => $row) {
-            $bobot[$row['kode_kriteria']] = $row['bobot'] / $totalBobot;
+            //ambil nilai bobot dari setiap kriteria
+            $bobot = $this->_db->other_query("SELECT bobot FROM kriteria WHERE kode_kriteria = '$row[kode_kriteria]'")->bobot;
+            $nilaiNormalisasi[$row['kode_kriteria']]['nilai'] = (float)$bobot / (float)$totalBobot;
+            $nilaiNormalisasi[$row['kode_kriteria']]['kode'] = $row['kode_kriteria'];
+            $nilaiNormalisasi[$row['kode_kriteria']]['kriteria'] = $row['nama_kriteria'];
+            $nilaiNormalisasi[$row['kode_kriteria']]['bobot'] = $row['bobot'];
         }
-        // hasil perangkingan
-        foreach ($normalisasi as $key => $row) {
-            $hasil[$key] = 0;
-            foreach ($row as $key_perankingan => $row_perankingan) {
-                $hasil[$key] += $row_perankingan * $bobot[$key_perankingan];
-            }
-        }
-        // insert hasil to t_hasil
-        foreach ($hasil as $key => $row) {
-            // cek data
-            $cek = $this->_db->other_query("SELECT * FROM t_hasil WHERE kode_alternatif = '$key'");
-            if ($cek) {
-                $this->_db->edit("UPDATE t_hasil SET hasil = '$row' WHERE kode_alternatif = '$key'");
-            } else {
-                $this->_db->insert("INSERT INTO t_hasil (kode_alternatif, hasil) VALUES ('$key', '$row')");
-            }
-        }
-        arsort($hasil);
-        $hasil_saw = [];
-        foreach ($hasil as $key => $hasilAkhir) {
-            $nama_lengkap = $this->_db->other_query("SELECT * FROM t_guru WHERE kode_alternatif = '$key'");
-            $hasil_saw[] = [
-                'kode' => $key,
-                'nama_lengkap' => $nama_lengkap->nama_lengkap,
-                'nilai' => $hasilAkhir,
-                'persen' => round($hasilAkhir * 100, 2) . '%'
-            ];
-        }
-        $waktuAkhir = microtime(true);
-        //waktu eksekusi mabac
-        $waktuTempuh = $waktuAkhir - $waktuAwal;
+        $data['normalisasi'] = $nilaiNormalisasi;
 
-        $data['hasil'] = $hasil_saw;
-        // pretty($data['hasil'], 1);
-        $data['waktu'] = $waktuTempuh;
+        //MENGHITUNG NILAI UTILITY
+        foreach ($alternatif as $a) {
+            foreach ($kriteria as $k) {
+                //ambil nilai cout
+                $cout = $this->_db->other_query("SELECT * FROM penilaian WHERE kode_alternatif = '$a[kode_alternatif]' AND kode_kriteria = '$k[kode_kriteria]'");
+
+                //ambil nilai cmax
+                $cmax = $this->_db->other_query("SELECT max(nilai) as max FROM penilaian WHERE kode_kriteria = '$k[kode_kriteria]'")->max;
+                //ambil nilai cmin
+                $cmin = $this->_db->other_query("SELECT min(nilai) as min FROM penilaian WHERE kode_kriteria = '$k[kode_kriteria]'")->min;
+
+                if ($k['tipe'] == 'benefit') {
+                    $nilaiUtility[$a['kode_alternatif']]['kode' . $k['kode_kriteria']] = $k['kode_kriteria'];
+                    $nilaiUtility[$a['kode_alternatif']]['nilai' . $k['kode_kriteria']] = ((float)$cout->nilai - (float)$cmin) / ((float)$cmax - (float)$cmin);
+                } else {
+                    $nilaiUtility[$a['kode_alternatif']]['kode' . $k['kode_kriteria']] = $k['kode_kriteria'];
+                    $nilaiUtility[$a['kode_alternatif']]['nilai' . $k['kode_kriteria']] = ((float)$cmax - (float)$cout->nilai) / ((float)$cmax - $cmin);
+                }
+            }
+        }
+        $data['nilai_utility'] = $nilaiUtility;
+
+        //MENGHITUNG NILAI AKHIR
+        foreach ($alternatif as $alter) {
+            $temp = 0;
+            foreach ($kriteria as $kriter) {
+                $temp += ($nilaiUtility[$alter['kode_alternatif']]['nilai' . $kriter['kode_kriteria']] * $nilaiNormalisasi[$kriter['kode_kriteria']]['nilai']);
+            }
+            $nilaiAkhir[$alter['kode_alternatif']]['nilai'] = $temp;
+            $nilaiAkhir[$alter['kode_alternatif']]['kode'] = $alter['kode_alternatif'];
+        }
+        rsort($nilaiAkhir);
+        $data['nilai_akhir'] = $nilaiAkhir;
+
+        $kode_alternatif_keputusan = $nilaiAkhir[0]['kode'];
+        $nilai_keputusan = $nilaiAkhir[0]['nilai'];
+        $data['keputusan'] = $this->_db->other_query("SELECT * FROM alternatif WHERE kode_alternatif = '$kode_alternatif_keputusan'");
+
+        // cek apakah sudah ada keputusan table hasil
+        $cek = $this->_db->other_query("SELECT nilai FROM hasil WHERE kode_pengguna = '$kode_pengguna'")->nilai;
+        if($cek){
+            $this->_db->edit("UPDATE hasil SET kode_alternatif = '$kode_alternatif_keputusan', nilai = '$nilai_keputusan' WHERE kode_pengguna = '$kode_pengguna'");
+        }else{
+            $this->_db->insert("INSERT INTO hasil (kode_pengguna, kode_alternatif, nilai) VALUES ('$kode_pengguna', '$kode_alternatif_keputusan', '$nilai_keputusan')");
+        }
+
+        //Inisialisasi waktu akhir
+        $waktuAkhir = microtime(true);
+		$waktuTempuh = $waktuAkhir - $waktuAwal;
+		$data['waktu'] = $waktuTempuh;
+        $data['kriteria'] = $kriteria;
+        $data['alternatif'] = $alternatif;
+
         view('layouts/_head');
         view('keputusan/hasil', $data);
         view('layouts/_foot');

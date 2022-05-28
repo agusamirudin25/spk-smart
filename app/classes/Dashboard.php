@@ -22,6 +22,7 @@ class Dashboard
         $data['total_pengguna'] = $this->_db->other_query("SELECT COUNT(*) AS total FROM pengguna", 1)->total;
         $data['total_alternatif'] = $this->_db->other_query("SELECT COUNT(*) AS total FROM alternatif", 1)->total;
         $data['total_kriteria'] = $this->_db->other_query("SELECT COUNT(*) AS total FROM kriteria", 1)->total;
+        $data['total_hasil'] = $this->_db->other_query("SELECT COUNT(*) AS total FROM hasil", 1)->total;
         view('layouts/_head');
         view('dashboard', $data);
         view('layouts/_foot');

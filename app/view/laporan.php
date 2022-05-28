@@ -1,33 +1,28 @@
-<!-- page css -->
-<link href="<?= base_url('') ?>assets/vendors/datatables/dataTables.bootstrap.min.css" rel="stylesheet">
-<!-- Content Wrapper START -->
-<div class="main-content">
+<div class="container-fluid mt-xl-50 mt-sm-30 mt-5">
     <div class="card">
         <div class="card-body">
-            <div class="row d-flex justify-content-between">
+            <div class="row d-flex justify-content-between mb-10">
                 <h4>Hasil Keputusan</h4>
                 <a href="<?= base_url('Laporan/generate') ?>" class="btn btn-info">Cetak Laporan</a>
             </div>
             <div class="m-t-25">
-                <table id="data-tables" class="table">
+                <table id="datatable" class="table">
                     <thead>
                         <tr>
-                            <th>Kode</th>
+                            <th>NIS</th>
                             <th>Nama</th>
+                            <th>Ekstrakurikuler</th>
                             <th>Nilai</th>
-                            <th>Persentase</th>
-                            <th>Ranking</th>
                         </tr>
                     </thead>
                     <tbody>
                         <?php $no = 1;
                         foreach ($hasil as $row) : ?>
                             <tr>
-                                <td><?= $row['kode_alternatif'] ?></td>
+                                <td><?= $row['kode_pengguna'] ?></td>
                                 <td><?= $row['nama_lengkap'] ?></td>
-                                <td><?= $row['hasil'] ?></td>
-                                <td><?= round($row['hasil'] * 100, 2)  . '%' ?></td>
-                                <td><?= $no++ ?></td>
+                                <td><?= $row['nama_alternatif'] ?></td>
+                                <td><?= round($row['nilai'] * 100, 2)  . '%' ?></td>
                             </tr>
                         <?php endforeach; ?>
                     </tbody>

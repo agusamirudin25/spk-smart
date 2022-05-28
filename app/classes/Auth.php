@@ -42,7 +42,11 @@ class Auth
                     $data['title'] = 'Login Success';
                     $data['msg'] = 'Data ditemukan';
                     $data['status'] = 1;
-                    $data['page'] = 'Dashboard';
+                    if($type == 1){
+                        $data['page'] = 'Dashboard';
+                    }else{
+                        $data['page'] = 'Penilaian';
+                    }
                     session_set('nip', $nipPengguna);
                     session_set('nama', $nama);
                     session_set('type', $type);

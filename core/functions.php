@@ -193,3 +193,15 @@ function is_in_array($array, $key, $key_value) : bool
     }
     return $within_array;
 }
+
+function is_array_empty($arr){
+    if(is_array($arr)){     
+        foreach($arr as $key => $value){
+            if(!empty($value) || $value != NULL || $value != ""){
+                return true;
+                break;//stop the process we have seen that at least 1 of the array has value so its not empty
+            }
+        }
+        return false;
+    }
+  }

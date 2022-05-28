@@ -66,36 +66,51 @@
             <div class="nicescroll-bar">
                 <div class="navbar-nav-wrap">
                     <ul class="navbar-nav flex-column">
-                        <li class="nav-item">
-                            <a class="nav-link" href="<?= base_url('Dashboard') ?>">
-                                <span class="feather-icon"><i data-feather="chrome"></i></span>
-                                <span class="nav-link-text">Dashboard</span>
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="<?= base_url('Pengguna') ?>">
-                                <span class="feather-icon"><i data-feather="users"></i></span>
-                                <span class="nav-link-text">Pengguna</span>
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="<?= base_url('Kriteria') ?>">
-                                <span class="feather-icon"><i data-feather="cpu"></i></span>
-                                <span class="nav-link-text">Kriteria</span>
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="<?= base_url('Alternatif') ?>">
-                                <span class="feather-icon"><i data-feather="command"></i></span>
-                                <span class="nav-link-text">Alternatif</span>
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="<?= base_url('Penilaian') ?>">
-                                <span class="feather-icon"><i data-feather="server"></i></span>
-                                <span class="nav-link-text">Penilaian</span>
-                            </a>
-                        </li>
+                        <?php if (session_get('type') == 1) : ?>
+                            <li class="nav-item">
+                                <a class="nav-link" href="<?= base_url('Dashboard') ?>">
+                                    <span class="feather-icon"><i data-feather="chrome"></i></span>
+                                    <span class="nav-link-text">Dashboard</span>
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="<?= base_url('Pengguna') ?>">
+                                    <span class="feather-icon"><i data-feather="users"></i></span>
+                                    <span class="nav-link-text">Pengguna</span>
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="<?= base_url('Kriteria') ?>">
+                                    <span class="feather-icon"><i data-feather="cpu"></i></span>
+                                    <span class="nav-link-text">Kriteria</span>
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="<?= base_url('Alternatif') ?>">
+                                    <span class="feather-icon"><i data-feather="command"></i></span>
+                                    <span class="nav-link-text">Alternatif</span>
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="<?= base_url('Laporan') ?>">
+                                    <span class="feather-icon"><i data-feather="book"></i></span>
+                                    <span class="nav-link-text">Laporan</span>
+                                </a>
+                            </li>
+                        <?php elseif (session_get('type') == 2) : ?>
+                            <li class="nav-item">
+                                <a class="nav-link" href="<?= base_url('Penilaian') ?>">
+                                    <span class="feather-icon"><i data-feather="server"></i></span>
+                                    <span class="nav-link-text">Penilaian</span>
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="<?= base_url('Keputusan') ?>">
+                                    <span class="feather-icon"><i data-feather="target"></i></span>
+                                    <span class="nav-link-text">Keputusan</span>
+                                </a>
+                            </li>
+                        <?php endif; ?>
                         <li class="nav-item">
                             <a class="nav-link" href="<?= base_url('Auth/logout') ?>">
                                 <span class="feather-icon"><i data-feather="log-out"></i></span>
