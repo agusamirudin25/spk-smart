@@ -91,6 +91,12 @@
                             </a>
                         </li>
                         <li class="nav-item">
+                            <a class="nav-link" href="<?= base_url('Penilaian') ?>">
+                                <span class="feather-icon"><i data-feather="server"></i></span>
+                                <span class="nav-link-text">Penilaian</span>
+                            </a>
+                        </li>
+                        <li class="nav-item">
                             <a class="nav-link" href="<?= base_url('Auth/logout') ?>">
                                 <span class="feather-icon"><i data-feather="log-out"></i></span>
                                 <span class="nav-link-text">Logout</span>

@@ -1,54 +1,52 @@
-<div class="main-content">
+<div class="container-fluid mt-xl-50 mt-sm-30 mt-15">
     <!-- Start content -->
     <div class="content">
         <div class="container-fluid">
             <div class="row">
                 <div class="col-sm-12">
                     <div class="page-title-box">
-                        <h4 class="page-title">Isi Kuesioner</h4>
+                        <h4 class="page-title">Isi Penilaian</h4>
                     </div>
                 </div>
 
             </div>
             <!-- end row -->
             <div class="row">
-                <div class="col-3">
+                <div class="col-4">
                     <div class="card m-b-20">
                         <div class="card-body">
                             <form>
                                 <div class="form-group">
-                                    <label for="nip">NIP</label>
-                                    <input type="text" disabled class="form-control" id="nip" value="<?= $guru->nip ?>">
+                                    <label for="nip">Ekstrakurikuler</label>
+                                    <input type="text" disabled class="form-control" id="nip" value="<?= $alternatif->nama_alternatif ?>">
                                 </div>
                                 <div class="form-group">
-                                    <label for="nip">Nama</label>
-                                    <input type="text" disabled class="form-control" id="nama" value="<?= $guru->nama_lengkap ?>">
+                                    <label for="nip">Prestasi</label>
+                                    <textarea disabled name="" class="form-control" id="" cols="30" rows="4"><?= $alternatif->prestasi ?></textarea>
                                 </div>
                                 <div class="form-group">
-                                    <label for="nip">Pangkat/Golongan</label>
-                                    <input type="text" disabled class="form-control" id="pangkat_golongan" value="<?= $guru->pangkat_golongan ?>">
+                                    <label for="nip">Waktu Latihan</label>
+                                    <textarea disabled name="" class="form-control" id="" cols="30" rows="2"><?= $alternatif->waktu_latihan ?></textarea>
                                 </div>
                             </form>
                         </div>
                     </div>
                 </div> <!-- end col -->
-                <div class="col-9">
+                <div class="col-8">
                     <div class="card m-b-20">
                         <div class="card-body">
                             <form id="formTambah" method="post" autocomplete="off">
-                                <input type="hidden" name="kode_alternatif" value="<?= $guru->kode_alternatif ?>">
-                                <?php foreach ($kompetensi as $key => $row) : ?>
-                                    <input type="hidden" readonly class="form-control" id="kode_<?= $row['kode_kompetensi'] ?>" name="kode_kompetensi[]" value="<?= $row['kode_kompetensi'] ?>">
+                                <input type="hidden" name="kode_alternatif" value="<?= $alternatif->kode_alternatif ?>">
+                                <?php foreach ($kriteria as $key => $row) : ?>
+                                    <input type="hidden" readonly class="form-control" id="kode_<?= $row['kode_kriteria'] ?>" name="kode_kriteria[]" value="<?= $row['kode_kriteria'] ?>">
                                     <div class="form-group">
-                                        <label><?= ($key + 1) . '. ' . $row['kompetensi'] ?></label>
-                                        <div class="form-row">
-                                            <?php foreach ($options as $key_opsi => $opsi) : ?>
-                                                <div class="col">
-                                                    <div class="radio">
-                                                        <input type="radio" name="jawaban_<?= $key + 1 ?>" id="radio<?= $key . $key_opsi ?>" value="<?= $opsi['nilai'] ?>" required>
-                                                        <label for="radio<?= $key . $key_opsi ?>">
-                                                            <?= $opsi['opsi'] ?>
-                                                        </label>
+                                        <label><?= ($key + 1) . '. ' . $row['nama_kriteria'] ?></label>
+                                        <div class="row">
+                                            <?php foreach ($row['opsi'] as $key_opsi => $opsi) : ?>
+                                                <div class="col mt-15">
+                                                    <div class="custom-control custom-radio">
+                                                        <input type="radio" name="jawaban_<?= $key + 1 ?>" id="radio<?= $key . $key_opsi ?>" value="<?= $opsi['nilai'] ?>" required class="custom-control-input">
+                                                        <label class="custom-control-label" for="radio<?= $key . $key_opsi ?>"><?= $opsi['opsi'] ?></label>
                                                     </div>
                                                 </div>
                                             <?php endforeach; ?>
@@ -72,11 +70,10 @@
 <script>
     $(document).ready(function() {
         $('#formTambah').submit(function(e) {
-            console.log(e);
             e.preventDefault();
             var data = new FormData(this);
             $.ajax({
-                url: '<?= url(); ?>kuesioner/proses_tambah_kuesioner',
+                url: '<?= url(); ?>penilaian/proses_tambah_penilaian',
                 type: "post",
                 data: data,
                 processData: false,
