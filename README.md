@@ -1,2 +1,2 @@
-# spk-saw
-Decision Support System with Simple Additive Weighting
+# spk-smart
+Decision Support System with Simple Multi-Attribute Rating Technique
