@@ -42,7 +42,7 @@
                                 <div class="form-group row">
                                     <label for="bobot" class="col-sm-2 col-form-label">Bobot</label>
                                     <div class="col-sm-10">
-                                        <input class="form-control" type="number" placeholder="Masukan Bobot" name="bobot" id="bobot" required>
+                                        <input class="form-control" type="number" placeholder="Contoh : 2 (nilai antara 1 sampai 10)" name="bobot" id="bobot" required>
                                     </div>
                                 </div>
                                 <button type="submit" class="btn btn-success" name="submit">Simpan</button>

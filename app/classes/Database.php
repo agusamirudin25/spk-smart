@@ -48,8 +48,7 @@ class Database
 
         return $row;
     }
-    function other_query($query, $type = 1)
-    {
+    function other_query($query, $type = 1)    {
         $result = $this->conn->query($query);
         if ($type == 1) {
             $data = $result->fetch_object();
